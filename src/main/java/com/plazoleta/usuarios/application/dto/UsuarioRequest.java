@@ -34,4 +34,6 @@ public class UsuarioRequest {
 
     @NotBlank(message = "La clave es obligatoria.")
     private String clave;
+
+    private Long idRol = 1L;
 }

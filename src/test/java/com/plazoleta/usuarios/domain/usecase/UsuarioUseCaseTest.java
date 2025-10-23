@@ -42,7 +42,8 @@ class UsuarioUseCaseTest {
                 "312586958",
                 LocalDate.now().minusYears(20),
                 "test@test.com",
-                "clave");
+                "clave",
+                1L);
     }
 
     @Test

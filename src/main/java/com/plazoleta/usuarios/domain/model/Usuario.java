@@ -12,8 +12,11 @@ public class Usuario {
     private LocalDate fechaNacimiento;
     private String correo;
     private String clave;
+    private Long idRol;
 
-    public Usuario(Long id, String nombre, String apellido, Long documentoIdentidad, String celular, LocalDate fechaNacimiento, String correo, String clave) {
+    public Usuario(Long id, String nombre, String apellido, Long documentoIdentidad,
+                   String celular, LocalDate fechaNacimiento, String correo,
+                   String clave, Long idRol) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -22,6 +25,7 @@ public class Usuario {
         this.fechaNacimiento = fechaNacimiento;
         this.correo = correo;
         this.clave = clave;
+        this.idRol = idRol;
     }
 
     public String getClave() {
@@ -86,5 +90,12 @@ public class Usuario {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getIdRol() {
+        return idRol;
+    }
+    public void setIdRol(Long idRol) {
+        this.idRol = idRol;
     }
 }
