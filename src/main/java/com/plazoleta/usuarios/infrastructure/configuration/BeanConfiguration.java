@@ -1,0 +1,25 @@
+package com.plazoleta.usuarios.infrastructure.configuration;
+
+import com.plazoleta.usuarios.domain.api.IUsuarioServicePort;
+import com.plazoleta.usuarios.domain.spi.IUsuarioPersistencePort;
+import com.plazoleta.usuarios.domain.usecase.UsuarioUseCase;
+import com.plazoleta.usuarios.infrastructure.out.jpa.adapter.UsuarioJpaAdapter;
+import com.plazoleta.usuarios.infrastructure.out.jpa.repository.IUsuarioRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@RequiredArgsConstructor
+public class BeanConfiguration {
+
+    @Bean
+    public IUsuarioPersistencePort usuarioPersistencePort() {
+        return new UsuarioJpaAdapter();
+    }
+
+    @Bean
+    public IUsuarioServicePort usuarioServicePort() {
+        return new UsuarioUseCase(usuarioPersistencePort());
+    }
+}
