@@ -1,19 +1,19 @@
 package com.plazoleta.usuarios.domain.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Usuario {
 
     private Long id;
     private String nombre;
     private String apellido;
-    private String documentoIdentidad;
+    private Long documentoIdentidad;
     private String celular;
-    private Date fechaNacimiento;
+    private LocalDate fechaNacimiento;
     private String correo;
     private String clave;
 
-    public Usuario(Long id, String nombre, String apellido, String documentoIdentidad, String celular, Date fechaNacimiento, String correo, String clave) {
+    public Usuario(Long id, String nombre, String apellido, Long documentoIdentidad, String celular, LocalDate fechaNacimiento, String correo, String clave) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -40,11 +40,11 @@ public class Usuario {
         this.correo = correo;
     }
 
-    public Date getFechaNacimiento() {
+    public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
@@ -56,11 +56,11 @@ public class Usuario {
         this.celular = celular;
     }
 
-    public String getDocumentoIdentidad() {
+    public Long getDocumentoIdentidad() {
         return documentoIdentidad;
     }
 
-    public void setDocumentoIdentidad(String documentoIdentidad) {
+    public void setDocumentoIdentidad(Long documentoIdentidad) {
         this.documentoIdentidad = documentoIdentidad;
     }
 
