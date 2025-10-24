@@ -1,6 +1,6 @@
 package com.plazoleta.usuarios.domain.validations;
 
-import com.plazoleta.usuarios.domain.Exception.UsuarioMenorDeEdadException;
+import com.plazoleta.usuarios.domain.exception.UsuarioMenorDeEdadException;
 
 import java.time.LocalDate;
 import java.time.Period;

@@ -23,9 +23,23 @@ public class UsuarioRestController {
 
     private final IUsuarioHandler usuarioHandler;
 
-    @Operation(summary = "Crear un usuario")
+    @Operation(summary = "Crear un usuario",
+                description="Crear un nuevo usuario en el sistema. Todos los campos son obligatoris" +
+                        "El usuario debe ser mayor de edad. los roles 1=ADMINISTRADOR, 2=PROPIETARIO" +
+                        "3= CLIENTE" )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Usuario creado", content = @Content)
+            @ApiResponse(responseCode = "201",
+                    description = "Usuario creado",
+                    content = @Content(
+                            mediaType = "application/json"
+                    )),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos no validos",
+                    content = @Content(
+                            mediaType = "application/json"
+                    )
+            )
     })
     @PostMapping("/")
     public ResponseEntity<UsuarioResponse> crearUsuario(@Valid @RequestBody UsuarioRequest usuarioRequest) {

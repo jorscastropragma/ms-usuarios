@@ -1,10 +1,10 @@
 package com.plazoleta.usuarios.domain.usecase;
 
-import com.plazoleta.usuarios.domain.Exception.UsuarioMenorDeEdadException;
+import com.plazoleta.usuarios.domain.exception.UsuarioMenorDeEdadException;
 import com.plazoleta.usuarios.domain.model.Usuario;
+import com.plazoleta.usuarios.domain.spi.IPasswordEncoderPort;
 import com.plazoleta.usuarios.domain.spi.IUsuarioPersistencePort;
 import com.plazoleta.usuarios.domain.validations.IUsuarioValidador;
-import com.plazoleta.usuarios.domain.validations.UsuarioValidador;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -27,6 +26,9 @@ class UsuarioUseCaseTest {
 
     @Mock
     private IUsuarioValidador usuarioValidador;
+
+    @Mock
+    private IPasswordEncoderPort passwordEncoderPort;
 
     @InjectMocks
     private UsuarioUseCase usuarioUseCase;
@@ -61,6 +63,8 @@ class UsuarioUseCaseTest {
 
         doThrow(new UsuarioMenorDeEdadException("El usuario debe ser mayor de edad."))
                 .when(usuarioValidador).validaMayorDeEdad(usuario.getFechaNacimiento());
+
+        when(passwordEncoderPort.encode(anyString())).thenReturn(anyString());
 
         assertThrows(UsuarioMenorDeEdadException.class, () -> usuarioUseCase.guardarUsuario(usuario));
 
