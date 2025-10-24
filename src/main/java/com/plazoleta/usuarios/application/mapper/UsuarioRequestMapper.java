@@ -1,6 +1,7 @@
 package com.plazoleta.usuarios.application.mapper;
 
 import com.plazoleta.usuarios.application.dto.UsuarioRequest;
+import com.plazoleta.usuarios.application.dto.UsuarioResponse;
 import com.plazoleta.usuarios.domain.model.Usuario;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -11,4 +12,6 @@ import org.mapstruct.ReportingPolicy;
 public interface UsuarioRequestMapper {
 
     Usuario toUsuario(UsuarioRequest usuarioRequest);
+
+    UsuarioResponse toUsuarioResponse(Usuario usuario);
 }

@@ -4,4 +4,5 @@ import com.plazoleta.usuarios.domain.model.Usuario;
 
 public interface IUsuarioPersistencePort {
     void guardarUsuario(Usuario usuario);
+    Usuario obtenerUsuarioPorId(Long id);
 }

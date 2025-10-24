@@ -14,4 +14,5 @@ public class UsuarioResponse {
     private String celular;
     private LocalDate fechaNacimiento;
     private String correo;
+    private String rol;
 }

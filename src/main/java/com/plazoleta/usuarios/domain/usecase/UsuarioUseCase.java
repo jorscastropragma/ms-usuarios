@@ -29,4 +29,11 @@ public class UsuarioUseCase implements IUsuarioServicePort {
         usuarioValidador.validaMayorDeEdad(usuario.getFechaNacimiento());
         usuarioPersistencePort.guardarUsuario(usuario);
     }
+
+    @Override
+    public Usuario obtenerUsuarioPorId(Long id) {
+        return usuarioPersistencePort.obtenerUsuarioPorId(id);
+    }
+
+
 }

@@ -70,4 +70,13 @@ class UsuarioUseCaseTest {
 
         verify(usuarioPersistencePort,never()).guardarUsuario(usuario);
     }
+
+    @Test
+    void obtenerUsuarioPorId(){
+        Long id = usuario.getId();
+
+        usuarioUseCase.obtenerUsuarioPorId(id);
+
+        verify(usuarioPersistencePort,times(1)).obtenerUsuarioPorId(id);
+    }
 }

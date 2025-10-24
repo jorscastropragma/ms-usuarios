@@ -5,16 +5,14 @@ import com.plazoleta.usuarios.application.dto.UsuarioResponse;
 import com.plazoleta.usuarios.application.handler.IUsuarioHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/usuario")
@@ -42,8 +40,31 @@ public class UsuarioRestController {
             )
     })
     @PostMapping("/")
-    public ResponseEntity<UsuarioResponse> crearUsuario(@Valid @RequestBody UsuarioRequest usuarioRequest) {
+    public ResponseEntity<Void> crearUsuario(@Valid @RequestBody UsuarioRequest usuarioRequest) {
         usuarioHandler.guardarUsuario(usuarioRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Operation(summary = "Obtener usuario por id",
+            description="Obtener los datos del usuario con su id" )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Usuario",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = UsuarioResponse.class)
+                    )),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "No se encontraron datos",
+                    content = @Content(
+                            mediaType = "application/json"
+                    )
+            )
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioResponse> obtenerUsuarioPorId(@PathVariable Long id) {
+        UsuarioResponse usuarioResponse = usuarioHandler.obtenerUsuarioPorId(id);
+        return ResponseEntity.ok(usuarioResponse);
     }
 }

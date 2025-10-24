@@ -1,13 +1,19 @@
 package com.plazoleta.usuarios.infrastructure.configuration;
 
+import com.plazoleta.usuarios.domain.api.IRolServicePort;
 import com.plazoleta.usuarios.domain.api.IUsuarioServicePort;
 import com.plazoleta.usuarios.domain.spi.IPasswordEncoderPort;
+import com.plazoleta.usuarios.domain.spi.IRolPersistencePort;
 import com.plazoleta.usuarios.domain.spi.IUsuarioPersistencePort;
+import com.plazoleta.usuarios.domain.usecase.RolUseCase;
 import com.plazoleta.usuarios.domain.usecase.UsuarioUseCase;
 import com.plazoleta.usuarios.domain.validations.IUsuarioValidador;
 import com.plazoleta.usuarios.domain.validations.UsuarioValidador;
+import com.plazoleta.usuarios.infrastructure.out.jpa.adapter.RolJpaAdapter;
 import com.plazoleta.usuarios.infrastructure.out.jpa.adapter.UsuarioJpaAdapter;
+import com.plazoleta.usuarios.infrastructure.out.jpa.mapper.RolEntityMapper;
 import com.plazoleta.usuarios.infrastructure.out.jpa.mapper.UsuarioEntityMapper;
+import com.plazoleta.usuarios.infrastructure.out.jpa.repository.IRolRepository;
 import com.plazoleta.usuarios.infrastructure.out.jpa.repository.IUsuarioRepository;
 import com.plazoleta.usuarios.infrastructure.out.security.PasswordEnconderRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +28,9 @@ public class BeanConfiguration {
 
     private final IUsuarioRepository iUsuarioRepository;
     private final UsuarioEntityMapper usuarioEntityMapper;
+
+    private final IRolRepository rolRepository;
+    private final RolEntityMapper rolEntityMapper;
 
     @Bean
     public IUsuarioPersistencePort usuarioPersistencePort() {
@@ -46,5 +55,15 @@ public class BeanConfiguration {
     @Bean
     public IUsuarioServicePort usuarioServicePort() {
         return new UsuarioUseCase(usuarioPersistencePort(), usuarioValidador(), passwordEncoderPort());
+    }
+
+    @Bean
+    public IRolPersistencePort rolPersistencePort() {
+        return new RolJpaAdapter(rolRepository, rolEntityMapper);
+    }
+
+    @Bean
+    public IRolServicePort rolServicePort() {
+        return new RolUseCase(rolPersistencePort());
     }
 }

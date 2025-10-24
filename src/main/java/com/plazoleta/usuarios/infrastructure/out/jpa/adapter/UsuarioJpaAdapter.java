@@ -2,6 +2,7 @@ package com.plazoleta.usuarios.infrastructure.out.jpa.adapter;
 
 import com.plazoleta.usuarios.domain.model.Usuario;
 import com.plazoleta.usuarios.domain.spi.IUsuarioPersistencePort;
+import com.plazoleta.usuarios.infrastructure.exception.NoDataFoundException;
 import com.plazoleta.usuarios.infrastructure.out.jpa.mapper.UsuarioEntityMapper;
 import com.plazoleta.usuarios.infrastructure.out.jpa.repository.IUsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,5 +17,11 @@ public class UsuarioJpaAdapter implements IUsuarioPersistencePort {
     @Override
     public void guardarUsuario(Usuario usuario) {
         usuarioRepository.save(usuarioEntityMapper.toEntity(usuario));
+    }
+
+    @Override
+    public Usuario obtenerUsuarioPorId(Long id) {
+        return usuarioEntityMapper.toUsuario(usuarioRepository.findById(id).
+                orElseThrow(NoDataFoundException::new));
     }
 }
