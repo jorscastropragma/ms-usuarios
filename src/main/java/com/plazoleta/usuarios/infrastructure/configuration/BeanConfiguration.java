@@ -1,14 +1,18 @@
 package com.plazoleta.usuarios.infrastructure.configuration;
 
+import com.plazoleta.usuarios.domain.api.ILoginServicePort;
 import com.plazoleta.usuarios.domain.api.IRolServicePort;
 import com.plazoleta.usuarios.domain.api.IUsuarioServicePort;
+import com.plazoleta.usuarios.domain.spi.ILoginAutenticacionPort;
 import com.plazoleta.usuarios.domain.spi.IPasswordEncoderPort;
 import com.plazoleta.usuarios.domain.spi.IRolPersistencePort;
 import com.plazoleta.usuarios.domain.spi.IUsuarioPersistencePort;
+import com.plazoleta.usuarios.domain.usecase.LoginUseCase;
 import com.plazoleta.usuarios.domain.usecase.RolUseCase;
 import com.plazoleta.usuarios.domain.usecase.UsuarioUseCase;
 import com.plazoleta.usuarios.domain.validations.IUsuarioValidador;
 import com.plazoleta.usuarios.domain.validations.UsuarioValidador;
+import com.plazoleta.usuarios.infrastructure.out.jpa.adapter.LoginJpaAdapter;
 import com.plazoleta.usuarios.infrastructure.out.jpa.adapter.RolJpaAdapter;
 import com.plazoleta.usuarios.infrastructure.out.jpa.adapter.UsuarioJpaAdapter;
 import com.plazoleta.usuarios.infrastructure.out.jpa.mapper.RolEntityMapper;
@@ -31,6 +35,8 @@ public class BeanConfiguration {
 
     private final IRolRepository rolRepository;
     private final RolEntityMapper rolEntityMapper;
+
+    private final JwtService jwtService;
 
     @Bean
     public IUsuarioPersistencePort usuarioPersistencePort() {
@@ -65,5 +71,15 @@ public class BeanConfiguration {
     @Bean
     public IRolServicePort rolServicePort() {
         return new RolUseCase(rolPersistencePort());
+    }
+
+    @Bean
+    public ILoginAutenticacionPort loginAutenticacionPort(){
+        return new LoginJpaAdapter(iUsuarioRepository,rolRepository,passwordEncoder(),jwtService);
+    }
+
+    @Bean
+    public ILoginServicePort loginServicePort(){
+        return new LoginUseCase(loginAutenticacionPort());
     }
 }

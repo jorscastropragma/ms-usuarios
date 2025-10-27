@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -44,38 +45,54 @@ class UsuarioUseCaseTest {
                 "312586958",
                 LocalDate.now().minusYears(20),
                 "test@test.com",
-                "clave",
+                "123",
                 1L);
     }
 
     @Test
-    void guardarUsuarioMayorDeEdad() {
+    void guardarUsuario_CuandoEsMayorDeEdad() {
+        String claveEncriptada = ">123<";
+
+        when(passwordEncoderPort.encode("123")).thenReturn(claveEncriptada);
 
         usuarioUseCase.guardarUsuario(usuario);
 
+        verify(passwordEncoderPort,times(1)).encode("123");
+        verify(usuarioValidador,times(1)).validaMayorDeEdad(usuario.getFechaNacimiento());
         verify(usuarioPersistencePort,times(1)).guardarUsuario(usuario);
     }
 
     @Test
-    void guardarUsuarioMenorDeEdadLanzaException() {
+    void guardarUsuario_CuandoEsMenorDeEdad() {
 
         usuario.setFechaNacimiento(LocalDate.now().minusYears(17));
+        String claveEncriptada = ">123<";
+
+        when(passwordEncoderPort.encode("123")).thenReturn(claveEncriptada);
 
         doThrow(new UsuarioMenorDeEdadException("El usuario debe ser mayor de edad."))
                 .when(usuarioValidador).validaMayorDeEdad(usuario.getFechaNacimiento());
 
-        when(passwordEncoderPort.encode(anyString())).thenReturn(anyString());
+        UsuarioMenorDeEdadException exception = assertThrows(UsuarioMenorDeEdadException.class,
+                () -> usuarioUseCase.guardarUsuario(usuario));
 
-        assertThrows(UsuarioMenorDeEdadException.class, () -> usuarioUseCase.guardarUsuario(usuario));
+        assertEquals("El usuario debe ser mayor de edad.",exception.getMessage());
 
+        verify(passwordEncoderPort,times(1)).encode("123");
+        verify(usuarioValidador,times(1)).validaMayorDeEdad(usuario.getFechaNacimiento());
         verify(usuarioPersistencePort,never()).guardarUsuario(usuario);
     }
 
     @Test
     void obtenerUsuarioPorId(){
         Long id = usuario.getId();
+        Usuario usuarioEsperado = usuario;
 
-        usuarioUseCase.obtenerUsuarioPorId(id);
+        when(usuarioPersistencePort.obtenerUsuarioPorId(id)).thenReturn(usuarioEsperado);
+
+        Usuario usuario1 = usuarioUseCase.obtenerUsuarioPorId(id);
+
+        assertEquals(usuarioEsperado,usuario1);
 
         verify(usuarioPersistencePort,times(1)).obtenerUsuarioPorId(id);
     }

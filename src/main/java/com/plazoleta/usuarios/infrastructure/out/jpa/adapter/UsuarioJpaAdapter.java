@@ -22,6 +22,6 @@ public class UsuarioJpaAdapter implements IUsuarioPersistencePort {
     @Override
     public Usuario obtenerUsuarioPorId(Long id) {
         return usuarioEntityMapper.toUsuario(usuarioRepository.findById(id).
-                orElseThrow(NoDataFoundException::new));
+                orElseThrow(()->new NoDataFoundException("No existe el usuario con id: " + id)));
     }
 }

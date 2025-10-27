@@ -21,7 +21,7 @@ class RolUseCaseTest {
     private RolUseCase rolUseCase;
 
     @Test
-    void getRol() {
+    void getRol_CuandoElRolExiste() {
         Long idRol = 1L;
         Rol rolEsperado = new Rol(1L, "ADMIN");
 
@@ -29,7 +29,21 @@ class RolUseCaseTest {
 
         Rol resultado = rolUseCase.getRol(idRol);
 
-        verify(rolPersistencePort, times(1)).getRol(idRol);
         assertEquals(rolEsperado, resultado);
+        verify(rolPersistencePort, times(1)).getRol(idRol);
+
+    }
+
+    @Test
+    void getRol_CuandoElRolNoExiste() {
+        Long idRol = 1L;
+        Rol rolEsperado = null;
+
+        when(rolPersistencePort.getRol(idRol)).thenReturn(rolEsperado);
+
+        Rol resultado = rolUseCase.getRol(idRol);
+
+        assertEquals(rolEsperado, resultado);
+        verify(rolPersistencePort, times(1)).getRol(idRol);
     }
 }

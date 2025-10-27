@@ -41,6 +41,6 @@ public class ControllerAdvisor {
     public ResponseEntity<Map<String, String>> handleNoDataFoundException(
             NoDataFoundException noDataFoundException) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Collections.singletonMap(MENSAJE, MensajeException.NO_DATA_FOUND.getMensaje()));
+                .body(Collections.singletonMap(MENSAJE, noDataFoundException.getLocalizedMessage()));
     }
 }
