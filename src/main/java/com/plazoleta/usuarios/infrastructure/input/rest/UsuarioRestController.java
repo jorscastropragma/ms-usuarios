@@ -71,6 +71,30 @@ public class UsuarioRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Operation(summary = "Crear un cliente",
+            description="Crear un nuevo usuario con rol cliente en el sistema. Todos los campos son obligatorios" +
+                    "El cliente debe ser mayor de edad." )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Cliente creado",
+                    content = @Content(
+                            mediaType = "application/json"
+                    )),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos no validos",
+                    content = @Content(
+                            mediaType = "application/json"
+                    )
+            )
+    })
+    @PostMapping("/cliente")
+    public ResponseEntity<Void> crearUsuarioCliente(@Valid @RequestBody UsuarioRequest usuarioRequest) {
+        usuarioRequest.setIdRol(4L);
+        usuarioHandler.guardarUsuario(usuarioRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     @Operation(summary = "Obtener usuario por id",
             description="Obtener los datos del usuario con su id" )
     @ApiResponses(value = {
