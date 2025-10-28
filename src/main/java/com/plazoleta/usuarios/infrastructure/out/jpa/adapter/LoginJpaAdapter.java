@@ -26,7 +26,6 @@ public class LoginJpaAdapter implements ILoginAutenticacionPort {
                 .orElseThrow(()-> new LoginUsuarioInvalidoException("Usuario o clave incorrectos."));
 
         if (!passwordEncoder.matches(clave,usuarioEntity.getClave())){
-            System.out.println(usuarioEntity.getCorreo()+" Clave incorrecta: "+clave+" - "+usuarioEntity.getClave());
             throw new LoginClaveInvalidoException("Usuario o clave incorrectos.");
         }
 

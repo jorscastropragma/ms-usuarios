@@ -3,7 +3,6 @@ package com.plazoleta.usuarios.infrastructure.input.rest;
 import com.plazoleta.usuarios.application.dto.LoginRequest;
 import com.plazoleta.usuarios.application.dto.LoginResponse;
 import com.plazoleta.usuarios.application.handler.ILoginHandler;
-import com.plazoleta.usuarios.infrastructure.exception.MensajeException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
