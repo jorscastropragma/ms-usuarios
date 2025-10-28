@@ -1,5 +1,6 @@
 package com.plazoleta.usuarios.application.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -35,5 +36,6 @@ public class UsuarioRequest {
     @NotBlank(message = "La clave es obligatoria.")
     private String clave;
 
+    @Schema(hidden = true)
     private Long idRol = 1L;
 }

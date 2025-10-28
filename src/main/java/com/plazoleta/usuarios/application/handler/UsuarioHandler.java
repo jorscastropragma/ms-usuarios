@@ -29,8 +29,8 @@ public class UsuarioHandler implements IUsuarioHandler {
     public UsuarioResponse obtenerUsuarioPorId(Long id) {
         Usuario usuario = usuarioServicePort.obtenerUsuarioPorId(id);
         UsuarioResponse usuarioResponse = usuarioRequestMapper.toUsuarioResponse(usuario);
-        Rol rol = rolServicePort.getRol(usuario.getId());
-        usuarioResponse.setRol(rol.getNombreRol());
+        Rol rol = rolServicePort.getRol(usuario.getIdRol());
+        usuarioResponse.setRol(rol.getNombre());
         return usuarioResponse;
     }
 }

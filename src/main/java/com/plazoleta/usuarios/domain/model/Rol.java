@@ -2,11 +2,11 @@ package com.plazoleta.usuarios.domain.model;
 
 public class Rol {
     private Long id;
-    private String nombreRol;
+    private String nombre;
 
-    public Rol(Long id, String nombreRol) {
+    public Rol(Long id, String nombre) {
         this.id = id;
-        this.nombreRol = nombreRol;
+        this.nombre = nombre;
     }
 
     public Long getId() {
@@ -17,7 +17,7 @@ public class Rol {
         this.id = id;
     }
 
-    public String getNombreRol() {return nombreRol;}
+    public String getNombre() {return nombre;}
 
-    public void setNombreRol(String nombreRol) {this.nombreRol = nombreRol;}
+    public void setNombre(String nombreRol) {this.nombre = nombreRol;}
 }

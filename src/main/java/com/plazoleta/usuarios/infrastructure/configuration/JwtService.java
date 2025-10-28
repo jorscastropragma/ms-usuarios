@@ -61,8 +61,4 @@ public class JwtService {
     public String obtnerCorreo(String token) {
         return obtenerClaims(token).getSubject();
     }
-
-    public String obtenerRole(String token) {
-        return obtenerClaims(token).get("role", String.class);
-    }
 }

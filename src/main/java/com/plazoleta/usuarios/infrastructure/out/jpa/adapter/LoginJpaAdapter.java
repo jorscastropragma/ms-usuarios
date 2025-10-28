@@ -30,6 +30,6 @@ public class LoginJpaAdapter implements ILoginAutenticacionPort {
         RolEntity rol = rolRepository.findById(usuarioEntity.getIdRol())
                 .orElseThrow(() -> new NoDataFoundException("Rol no encontrado."));
 
-        return jwtService.generarToken(usuarioEntity.getCorreo(),rol.getNombreRol());
+        return jwtService.generarToken(usuarioEntity.getCorreo(),rol.getNombre());
     }
 }

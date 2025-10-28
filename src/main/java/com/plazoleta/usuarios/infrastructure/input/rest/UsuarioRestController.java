@@ -24,7 +24,7 @@ public class UsuarioRestController {
     @Operation(summary = "Crear un usuario",
                 description="Crear un nuevo usuario en el sistema. Todos los campos son obligatoris" +
                         "El usuario debe ser mayor de edad. los roles 1=ADMINISTRADOR, 2=PROPIETARIO" +
-                        "3= CLIENTE" )
+                        "3= EMPLEADO" )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
                     description = "Usuario creado",
@@ -39,8 +39,16 @@ public class UsuarioRestController {
                     )
             )
     })
-    @PostMapping("/")
-    public ResponseEntity<Void> crearUsuario(@Valid @RequestBody UsuarioRequest usuarioRequest) {
+    @PostMapping("/propietario")
+    public ResponseEntity<Void> crearUsuarioPropietario(@Valid @RequestBody UsuarioRequest usuarioRequest) {
+        usuarioRequest.setIdRol(2L);
+        usuarioHandler.guardarUsuario(usuarioRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/empleado")
+    public ResponseEntity<Void> crearUsuarioEmpleado(@Valid @RequestBody UsuarioRequest usuarioRequest) {
+        usuarioRequest.setIdRol(3L);
         usuarioHandler.guardarUsuario(usuarioRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
