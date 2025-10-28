@@ -33,14 +33,27 @@ public class ControllerAdvisor {
 
     @ExceptionHandler(UsuarioMenorDeEdadException.class)
     public ResponseEntity<Map<String, String>> domainUsuarioMenorDeEdadException(UsuarioMenorDeEdadException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(MENSAJE, ex.getMessage()));
     }
 
-    @ExceptionHandler(NoDataFoundException.class)
-    public ResponseEntity<Map<String, String>> handleNoDataFoundException(
-            NoDataFoundException noDataFoundException) {
+    @ExceptionHandler({
+            UsuarioNoEncontradoException.class,
+            RolNoEncontradoException.class
+    })
+    public ResponseEntity<Map<String, String>> noDataFoundException(
+            RuntimeException noDataFoundException) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Collections.singletonMap(MENSAJE, noDataFoundException.getLocalizedMessage()));
+    }
+
+    @ExceptionHandler({
+            LoginUsuarioInvalidoException.class,
+            LoginClaveInvalidoException.class
+    })
+    public ResponseEntity<Map<String, String>> invalidoException(
+            RuntimeException invalidoException) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(Collections.singletonMap(MENSAJE, invalidoException.getLocalizedMessage()));
     }
 }

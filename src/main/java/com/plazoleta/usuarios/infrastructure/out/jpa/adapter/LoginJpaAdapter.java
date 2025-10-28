@@ -2,7 +2,9 @@ package com.plazoleta.usuarios.infrastructure.out.jpa.adapter;
 
 import com.plazoleta.usuarios.domain.spi.ILoginAutenticacionPort;
 import com.plazoleta.usuarios.infrastructure.configuration.JwtService;
-import com.plazoleta.usuarios.infrastructure.exception.NoDataFoundException;
+import com.plazoleta.usuarios.infrastructure.exception.LoginClaveInvalidoException;
+import com.plazoleta.usuarios.infrastructure.exception.LoginUsuarioInvalidoException;
+import com.plazoleta.usuarios.infrastructure.exception.RolNoEncontradoException;
 import com.plazoleta.usuarios.infrastructure.out.jpa.entity.RolEntity;
 import com.plazoleta.usuarios.infrastructure.out.jpa.entity.UsuarioEntity;
 import com.plazoleta.usuarios.infrastructure.out.jpa.repository.IRolRepository;
@@ -21,14 +23,15 @@ public class LoginJpaAdapter implements ILoginAutenticacionPort {
     @Override
     public String autenticar(String correo, String clave) {
         UsuarioEntity usuarioEntity = usuarioRepository.findByCorreo(correo)
-                .orElseThrow(()-> new NoDataFoundException("Usuario no encontrado."));
+                .orElseThrow(()-> new LoginUsuarioInvalidoException("Usuario o clave incorrectos."));
 
         if (!passwordEncoder.matches(clave,usuarioEntity.getClave())){
-            throw new NoDataFoundException("Clave incorrecta.");
+            System.out.println(usuarioEntity.getCorreo()+" Clave incorrecta: "+clave+" - "+usuarioEntity.getClave());
+            throw new LoginClaveInvalidoException("Usuario o clave incorrectos.");
         }
 
         RolEntity rol = rolRepository.findById(usuarioEntity.getIdRol())
-                .orElseThrow(() -> new NoDataFoundException("Rol no encontrado."));
+                .orElseThrow(() -> new RolNoEncontradoException("Rol no encontrado."));
 
         return jwtService.generarToken(usuarioEntity.getCorreo(),rol.getNombre());
     }
