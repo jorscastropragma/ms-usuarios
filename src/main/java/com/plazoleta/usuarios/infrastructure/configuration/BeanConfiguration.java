@@ -18,6 +18,7 @@ import com.plazoleta.usuarios.infrastructure.out.jpa.mapper.RolEntityMapper;
 import com.plazoleta.usuarios.infrastructure.out.jpa.mapper.UsuarioEntityMapper;
 import com.plazoleta.usuarios.infrastructure.out.jpa.repository.IRolRepository;
 import com.plazoleta.usuarios.infrastructure.out.jpa.repository.IUsuarioRepository;
+import com.plazoleta.usuarios.infrastructure.out.restconsumer.feign.EmpleadoRestauranteFeignClient;
 import com.plazoleta.usuarios.infrastructure.out.security.PasswordEnconderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class BeanConfiguration {
 
+    private final EmpleadoRestauranteFeignClient empleadoRestauranteFeignClient;
     private final IUsuarioRepository iUsuarioRepository;
     private final UsuarioEntityMapper usuarioEntityMapper;
 
@@ -37,9 +39,10 @@ public class BeanConfiguration {
 
     private final JwtService jwtService;
 
+
     @Bean
     public IUsuarioPersistencePort usuarioPersistencePort() {
-        return new UsuarioJpaAdapter(iUsuarioRepository,  usuarioEntityMapper);
+        return new UsuarioJpaAdapter(iUsuarioRepository, empleadoRestauranteFeignClient, usuarioEntityMapper);
     }
 
     @Bean

@@ -5,7 +5,8 @@ public enum MensajePortException {
     ROL_NO_ENCONTRADO("ROL no encontrado"),
     CORREO_CLAVE_INVALIDA("Correo o clave invalida."),
     CORREO_YA_EXISTE("Correo ya registrado."),
-    DOCUMENTO_YA_EXISTE("Documento ya registrado.");
+    DOCUMENTO_YA_EXISTE("Documento ya registrado."),
+    EMPLEADO_NO_CREADO("No se puedo crear el empleado");
 
     private String mensaje;
 

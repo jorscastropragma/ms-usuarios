@@ -1,5 +1,6 @@
 package com.plazoleta.usuarios.infrastructure.input.rest;
 
+import com.plazoleta.usuarios.application.dto.EmpleadoRequest;
 import com.plazoleta.usuarios.application.dto.UsuarioRequest;
 import com.plazoleta.usuarios.application.dto.UsuarioResponse;
 import com.plazoleta.usuarios.application.handler.IUsuarioHandler;
@@ -64,11 +65,11 @@ public class UsuarioRestController {
                     )
             )
     })
-    @PostMapping("/empleado")
+    @PostMapping("/empleado/")
     ///validar quien es el propietario
-    public ResponseEntity<Void> crearUsuarioEmpleado(@Valid @RequestBody UsuarioRequest usuarioRequest) {
-        usuarioRequest.setIdRol(3L);
-        usuarioHandler.guardarUsuario(usuarioRequest);
+    public ResponseEntity<Void> crearUsuarioEmpleado(@Valid @RequestBody EmpleadoRequest empleadoRequest) {
+        empleadoRequest.setIdRol(3L);
+        usuarioHandler.guardarEmpleado(empleadoRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

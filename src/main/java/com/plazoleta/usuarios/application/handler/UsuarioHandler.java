@@ -1,5 +1,6 @@
 package com.plazoleta.usuarios.application.handler;
 
+import com.plazoleta.usuarios.application.dto.EmpleadoRequest;
 import com.plazoleta.usuarios.application.dto.UsuarioRequest;
 import com.plazoleta.usuarios.application.dto.UsuarioResponse;
 import com.plazoleta.usuarios.application.mapper.UsuarioRequestMapper;
@@ -9,8 +10,10 @@ import com.plazoleta.usuarios.domain.model.Rol;
 import com.plazoleta.usuarios.domain.model.Usuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UsuarioHandler implements IUsuarioHandler {
 
@@ -32,5 +35,11 @@ public class UsuarioHandler implements IUsuarioHandler {
         Rol rol = rolServicePort.getRol(usuario.getIdRol());
         usuarioResponse.setRol(rol.getNombre());
         return usuarioResponse;
+    }
+
+    @Override
+    public void guardarEmpleado(EmpleadoRequest empleadoRequest) {
+        UsuarioRequest usuario = usuarioRequestMapper.toUsuarioRequest(empleadoRequest);
+        usuarioServicePort.guardarEmpleado(usuarioRequestMapper.toUsuario(usuario), empleadoRequest.getIdRestaurante());
     }
 }

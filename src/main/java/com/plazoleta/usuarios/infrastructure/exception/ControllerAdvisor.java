@@ -64,4 +64,12 @@ public class ControllerAdvisor {
         result.put(CODIGO,CodigoException.RESTRICCION_RECURSO_YA_EXISTE.getCodigo());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
     }
+
+    @ExceptionHandler(ProcesoFallidoException.class)
+    public ResponseEntity<Map<String, String>> domainProcesoFallidoException(ProcesoFallidoException ex) {
+        var result = new HashMap<String, String>();
+        result.put(MENSAJE, ex.getMessage());
+        result.put(CODIGO,CodigoException.NO_SE_PUDO_REALIZAR_PETICION.getCodigo());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(result);
+    }
 }

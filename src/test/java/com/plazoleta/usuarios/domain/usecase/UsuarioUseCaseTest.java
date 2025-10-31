@@ -5,6 +5,7 @@ import com.plazoleta.usuarios.domain.model.Usuario;
 import com.plazoleta.usuarios.domain.spi.IPasswordEncoderPort;
 import com.plazoleta.usuarios.domain.spi.IUsuarioPersistencePort;
 import com.plazoleta.usuarios.domain.validations.UsuarioValidador;
+import com.plazoleta.usuarios.infrastructure.out.restconsumer.feign.EmpleadoRestauranteFeignClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -57,7 +58,6 @@ class UsuarioUseCaseTest {
         usuarioUseCase.guardarUsuario(usuario);
 
         verify(passwordEncoderPort,times(1)).encode("123");
-        verify(usuarioValidador,times(1)).validaMayorDeEdad(usuario.getFechaNacimiento());
         verify(usuarioPersistencePort,times(1)).guardarUsuario(usuario);
     }
 
@@ -69,16 +69,12 @@ class UsuarioUseCaseTest {
 
         when(passwordEncoderPort.encode("123")).thenReturn(claveEncriptada);
 
-        doThrow(new ReglaDeNegocioInvalidaException("El usuario debe ser mayor de edad."))
-                .when(usuarioValidador).validaMayorDeEdad(usuario.getFechaNacimiento());
-
         ReglaDeNegocioInvalidaException exception = assertThrows(ReglaDeNegocioInvalidaException.class,
                 () -> usuarioUseCase.guardarUsuario(usuario));
 
         assertEquals("El usuario debe ser mayor de edad.",exception.getMessage());
 
         verify(passwordEncoderPort,times(1)).encode("123");
-        verify(usuarioValidador,times(1)).validaMayorDeEdad(usuario.getFechaNacimiento());
         verify(usuarioPersistencePort,never()).guardarUsuario(usuario);
     }
 

@@ -7,4 +7,6 @@ public interface IUsuarioServicePort {
     void guardarUsuario(Usuario usuario);
 
     Usuario obtenerUsuarioPorId(Long id);
+
+    void guardarEmpleado(Usuario usuario, Long idRestaurante);
 }

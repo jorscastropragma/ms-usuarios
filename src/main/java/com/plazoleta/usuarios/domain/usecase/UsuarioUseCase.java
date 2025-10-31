@@ -31,5 +31,12 @@ public class UsuarioUseCase implements IUsuarioServicePort {
         return usuarioPersistencePort.obtenerUsuarioPorId(id);
     }
 
+    @Override
+    public void guardarEmpleado(Usuario usuario, Long idRestaurante) {
+        usuario.setClave(passwordEncoderPort.encode(usuario.getClave()));
+        new UsuarioValidador().validaMayorDeEdad(usuario.getFechaNacimiento());
+        usuarioPersistencePort.guardarEmpleado(usuario, idRestaurante);
+    }
+
 
 }
