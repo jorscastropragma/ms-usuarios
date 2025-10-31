@@ -65,6 +65,7 @@ public class UsuarioRestController {
             )
     })
     @PostMapping("/empleado")
+    ///validar quien es el propietario
     public ResponseEntity<Void> crearUsuarioEmpleado(@Valid @RequestBody UsuarioRequest usuarioRequest) {
         usuarioRequest.setIdRol(3L);
         usuarioHandler.guardarUsuario(usuarioRequest);

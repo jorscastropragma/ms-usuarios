@@ -20,7 +20,7 @@ class LoginUseCaseTest {
     private ILoginAutenticacionPort loginAutenticacionPort;
 
     @Test
-    void login() {
+    void test_login() {
         String correo = "correo@test.com";
         String clave = "123";
 

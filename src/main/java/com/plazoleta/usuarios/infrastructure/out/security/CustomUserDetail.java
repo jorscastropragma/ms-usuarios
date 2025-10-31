@@ -1,7 +1,7 @@
 package com.plazoleta.usuarios.infrastructure.out.security;
 
-import com.plazoleta.usuarios.infrastructure.exception.RolNoEncontradoException;
-import com.plazoleta.usuarios.infrastructure.exception.UsuarioNoEncontradoException;
+import com.plazoleta.usuarios.infrastructure.exception.MensajePortException;
+import com.plazoleta.usuarios.infrastructure.exception.RecursoNoEncontradoException;
 import com.plazoleta.usuarios.infrastructure.out.jpa.entity.RolEntity;
 import com.plazoleta.usuarios.infrastructure.out.jpa.entity.UsuarioEntity;
 import com.plazoleta.usuarios.infrastructure.out.jpa.repository.IRolRepository;
@@ -26,10 +26,11 @@ public class CustomUserDetail implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
         UsuarioEntity usuarioEntity = usuarioRepository.findByCorreo(correo)
-                .orElseThrow(()-> new UsuarioNoEncontradoException("Usuario no encontrado."));
+                //enums para mensajes
+                .orElseThrow(()-> new RecursoNoEncontradoException(MensajePortException.USUARIO_NO_ENCONTRADO.getMensaje()));
 
         RolEntity rol = rolRepository.findById(usuarioEntity.getIdRol())
-                .orElseThrow(() -> new RolNoEncontradoException("Rol no encontrado."));
+                .orElseThrow(() -> new RecursoNoEncontradoException(MensajePortException.ROL_NO_ENCONTRADO.getMensaje()));
 
         return User.builder()
                 .username(usuarioEntity.getCorreo())

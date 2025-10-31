@@ -1,10 +1,10 @@
 package com.plazoleta.usuarios.domain.usecase;
 
-import com.plazoleta.usuarios.domain.exception.UsuarioMenorDeEdadException;
+import com.plazoleta.usuarios.domain.exception.ReglaDeNegocioInvalidaException;
 import com.plazoleta.usuarios.domain.model.Usuario;
 import com.plazoleta.usuarios.domain.spi.IPasswordEncoderPort;
 import com.plazoleta.usuarios.domain.spi.IUsuarioPersistencePort;
-import com.plazoleta.usuarios.domain.validations.IUsuarioValidador;
+import com.plazoleta.usuarios.domain.validations.UsuarioValidador;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,8 +25,7 @@ class UsuarioUseCaseTest {
     @Mock
     private IUsuarioPersistencePort usuarioPersistencePort;
 
-    @Mock
-    private IUsuarioValidador usuarioValidador;
+    private UsuarioValidador usuarioValidador;
 
     @Mock
     private IPasswordEncoderPort passwordEncoderPort;
@@ -70,10 +69,10 @@ class UsuarioUseCaseTest {
 
         when(passwordEncoderPort.encode("123")).thenReturn(claveEncriptada);
 
-        doThrow(new UsuarioMenorDeEdadException("El usuario debe ser mayor de edad."))
+        doThrow(new ReglaDeNegocioInvalidaException("El usuario debe ser mayor de edad."))
                 .when(usuarioValidador).validaMayorDeEdad(usuario.getFechaNacimiento());
 
-        UsuarioMenorDeEdadException exception = assertThrows(UsuarioMenorDeEdadException.class,
+        ReglaDeNegocioInvalidaException exception = assertThrows(ReglaDeNegocioInvalidaException.class,
                 () -> usuarioUseCase.guardarUsuario(usuario));
 
         assertEquals("El usuario debe ser mayor de edad.",exception.getMessage());

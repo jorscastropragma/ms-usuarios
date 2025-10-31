@@ -1,6 +1,6 @@
 package com.plazoleta.usuarios.infrastructure.exception;
 
-import com.plazoleta.usuarios.domain.exception.UsuarioMenorDeEdadException;
+import com.plazoleta.usuarios.domain.exception.ReglaDeNegocioInvalidaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
 public class ControllerAdvisor {
 
     private static final String MENSAJE = "mensaje";
+    private static final String CODIGO = "codigo";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationException(MethodArgumentNotValidException ex) {
@@ -31,29 +33,35 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(MENSAJE, message));
     }
 
-    @ExceptionHandler(UsuarioMenorDeEdadException.class)
-    public ResponseEntity<Map<String, String>> domainUsuarioMenorDeEdadException(UsuarioMenorDeEdadException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Collections.singletonMap(MENSAJE, ex.getMessage()));
+    @ExceptionHandler(CredencialInvalidaException.class)
+    public ResponseEntity<Map<String, String>> handleValidationException(CredencialInvalidaException ex) {
+        var result = new HashMap<String, String>();
+        result.put(MENSAJE, ex.getMessage());
+        result.put(CODIGO,CodigoException.CREDENCIALES_INVALIDAS.getCodigo());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
     }
 
-    @ExceptionHandler({
-            UsuarioNoEncontradoException.class,
-            RolNoEncontradoException.class
-    })
-    public ResponseEntity<Map<String, String>> noDataFoundException(
-            RuntimeException noDataFoundException) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Collections.singletonMap(MENSAJE, noDataFoundException.getLocalizedMessage()));
+    @ExceptionHandler(RecursoNoEncontradoException.class)
+    public ResponseEntity<Map<String, String>> handleNotFoundException(RecursoNoEncontradoException ex) {
+        var result = new HashMap<String, String>();
+        result.put(MENSAJE, ex.getMessage());
+        result.put(CODIGO,CodigoException.NO_DATA_FOUND.getCodigo());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
     }
 
-    @ExceptionHandler({
-            LoginUsuarioInvalidoException.class,
-            LoginClaveInvalidoException.class
-    })
-    public ResponseEntity<Map<String, String>> invalidoException(
-            RuntimeException invalidoException) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(Collections.singletonMap(MENSAJE, invalidoException.getLocalizedMessage()));
+    @ExceptionHandler(ReglaDeNegocioInvalidaException.class)
+    public ResponseEntity<Map<String, String>> domainReglaDeNegocioException(ReglaDeNegocioInvalidaException ex) {
+        var result = new HashMap<String, String>();
+        result.put(MENSAJE, ex.getMessage());
+        result.put(CODIGO,CodigoException.REGLAS_DE_NEGOCIO_INVALIDAS.getCodigo());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(result);
+    }
+
+    @ExceptionHandler(RestriccionRecursoYaExisteException.class)
+    public ResponseEntity<Map<String, String>> domainRestricionDupliacdoException(RestriccionRecursoYaExisteException ex) {
+        var result = new HashMap<String, String>();
+        result.put(MENSAJE, ex.getMessage());
+        result.put(CODIGO,CodigoException.RESTRICCION_RECURSO_YA_EXISTE.getCodigo());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
     }
 }

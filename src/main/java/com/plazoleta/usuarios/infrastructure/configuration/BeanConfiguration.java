@@ -10,7 +10,6 @@ import com.plazoleta.usuarios.domain.spi.IUsuarioPersistencePort;
 import com.plazoleta.usuarios.domain.usecase.LoginUseCase;
 import com.plazoleta.usuarios.domain.usecase.RolUseCase;
 import com.plazoleta.usuarios.domain.usecase.UsuarioUseCase;
-import com.plazoleta.usuarios.domain.validations.IUsuarioValidador;
 import com.plazoleta.usuarios.domain.validations.UsuarioValidador;
 import com.plazoleta.usuarios.infrastructure.out.jpa.adapter.LoginJpaAdapter;
 import com.plazoleta.usuarios.infrastructure.out.jpa.adapter.RolJpaAdapter;
@@ -44,11 +43,6 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public IUsuarioValidador usuarioValidador() {
-        return new UsuarioValidador();
-    }
-
-    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -60,7 +54,7 @@ public class BeanConfiguration {
 
     @Bean
     public IUsuarioServicePort usuarioServicePort() {
-        return new UsuarioUseCase(usuarioPersistencePort(), usuarioValidador(), passwordEncoderPort());
+        return new UsuarioUseCase(usuarioPersistencePort(), passwordEncoderPort());
     }
 
     @Bean
