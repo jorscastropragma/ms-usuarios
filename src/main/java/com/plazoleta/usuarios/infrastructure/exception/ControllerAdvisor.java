@@ -33,14 +33,6 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(MENSAJE, message));
     }
 
-    @ExceptionHandler(CredencialInvalidaException.class)
-    public ResponseEntity<Map<String, String>> handleValidationException(CredencialInvalidaException ex) {
-        var result = new HashMap<String, String>();
-        result.put(MENSAJE, ex.getMessage());
-        result.put(CODIGO,CodigoException.CREDENCIALES_INVALIDAS.getCodigo());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
-    }
-
     @ExceptionHandler(RecursoNoEncontradoException.class)
     public ResponseEntity<Map<String, String>> handleNotFoundException(RecursoNoEncontradoException ex) {
         var result = new HashMap<String, String>();

@@ -2,17 +2,14 @@ server:
   port: 8080
 
 spring:
+  aplication:
+    name: ms-usuarios
+  security:
+    authorize:
   datasource:
     url: jdbc:postgresql://localhost:5432/usuarios
     username: postgres
     password: postgres
-  sql:
-    init:
-      mode: always
-  jpa:
-    defer-datasource-initialization: true
-    hibernate:
-      ddl-auto: create-drop
 
 appDescription: "Usuario"
 appVersion: "1.0.0"
@@ -24,10 +21,6 @@ springdoc:
     path: /swagger-ui.html
     enabled: true
 
-app:
-  jwt:
-    llave: "8979d62702cf56721c86967eff5b1cb820982de3b45f40f9c12f5762cde6f419"
-    expiracion: 150
 
 empleado:
   restaurante:
